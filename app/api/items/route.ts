@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
            item_id, product_name, category, supplier_name, batch_number,
            unit_of_measure, quantity, min_stock_level, shelf_location,
            entry_date: new Date(entry_date),
-           expiry_date: expiryDate ? new Date(expiryDate) : null,
+           expiry_date: expiry_date ? new Date(expiry_date) : null,
            unit_price, notes, qr_code_data,
            status: 'active'
          }

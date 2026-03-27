@@ -1,4 +1,4 @@
-export type ItemStatus = 'active' | 'deleted'
+export type ItemStatus = 'active' | 'deleted' | (string & {})
 
 export interface Item {
   item_id: string
@@ -24,7 +24,7 @@ export interface Item {
 export interface StockMovement {
   movement_id: number
   item_id: string
-  movement_type: 'in' | 'out' | 'adjustment'
+  movement_type: 'in' | 'out' | 'adjustment' | (string & {})
   quantity_change: number
   previous_quantity: number
   new_quantity: number
@@ -36,9 +36,9 @@ export interface StockMovement {
 export interface Alert {
   alert_id: number
   item_id: string
-  alert_type: 'low_stock' | 'expired' | 'expiring_soon'
+  alert_type: 'low_stock' | 'expired' | 'expiring_soon' | (string & {})
   alert_message: string
-  severity: 'low' | 'medium' | 'high' | 'warning'
+  severity: 'low' | 'medium' | 'high' | 'warning' | (string & {})
   timestamp: Date
   acknowledged: boolean
 }

@@ -1,7 +1,5 @@
-import { defineConfig } from "prisma"
-
-export default defineConfig({
+export default {
   datasource: {
     url: process.env.DATABASE_URL || "file:./dev.db"
   }
-})
+}

@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { qr: string } }
+  { params }: { params: Promise<{ qr: string }> }
 ) {
   try {
     const { qr } = await params
