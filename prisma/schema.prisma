@@ -1,0 +1,69 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Item {
+  item_id          String   @id
+  qr_code_data     String   @unique
+  product_name     String
+  category         String
+  supplier_name    String
+  batch_number     String
+  unit_of_measure  String
+  quantity         Int      @default(0)
+  min_stock_level  Int      @default(10)
+  shelf_location   String
+  entry_date       DateTime
+  expiry_date      DateTime?
+  manufacture_date DateTime?
+  unit_price       Float?
+  notes            String?
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+  status           String   @default("active") // "active" or "deleted"
+
+  stock_movements  StockMovement[]
+  scan_logs        ScanLog[]
+  alerts           Alert[]
+}
+
+model StockMovement {
+  movement_id       Int      @id @default(autoincrement())
+  item_id           String
+  movement_type     String   // "in", "out", "adjustment"
+  quantity_change   Int
+  previous_quantity Int
+  new_quantity      Int
+  reason            String?
+  performed_by      String   @default("System")
+  timestamp         DateTime @default(now())
+
+  item Item @relation(fields: [item_id], references: [item_id], onDelete: Cascade)
+}
+
+model ScanLog {
+  log_id          Int      @id @default(autoincrement())
+  item_id         String
+  scan_timestamp  DateTime @default(now())
+  scan_type       String   // "manual", "qr", "rfid"
+  alerts_triggered String?
+
+  item Item @relation(fields: [item_id], references: [item_id], onDelete: Cascade)
+}
+
+model Alert {
+  alert_id      Int      @id @default(autoincrement())
+  item_id       String
+  alert_type    String   // "low_stock", "expired", "expiring_soon"
+  alert_message String
+  severity      String   // "low", "medium", "high"
+  timestamp     DateTime @default(now())
+  acknowledged  Boolean  @default(false)
+
+  item Item @relation(fields: [item_id], references: [item_id], onDelete: Cascade)
+}
